@@ -1,9 +1,3 @@
-```markdown
-<div align="center">
-  <p align="center">
-    <img src="logo_placeholder.png" alt="Logo" width="200"/>
-  </p>
-  
   # MiniRSS
   
   **A keyboard-driven, three-pane RSS reader for the terminal generation — built with PyQt6.**
@@ -142,6 +136,4 @@ This project is licensed under the MIT License — see the `LICENSE` file for de
 
 *Built for people who still believe in RSS.* ⭐ If MiniRSS saved you a browser tab, give the repo a star.
 
-```
 
-```
