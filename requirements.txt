@@ -1,2 +1,2 @@
 feedparser>=6.0.10
-pyinstaller>=6.0
+PyQt6>=6.5.0

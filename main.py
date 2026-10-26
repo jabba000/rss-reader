@@ -1,29 +1,21 @@
-"""Entry point: builds Model, View, Controller and starts the Tk main loop."""
+"""Entry point: builds Model, View, Controller and starts the PyQt6 main loop."""
 import sys
-import tkinter as tk
+from PyQt6.QtWidgets import QApplication
 
 from controller import Controller
 from model import Model
 from view import View
 
-
-def _enable_hidpi() -> None:
-    if sys.platform == "win32":
-        try:
-            import ctypes
-            ctypes.windll.shcore.SetProcessDpiAwareness(1)
-        except Exception:
-            pass
-
-
 def main() -> None:
-    _enable_hidpi()
-    root = tk.Tk()
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")  
+    
     model = Model()
-    view = View(root)
-    controller = Controller(model, view)  # noqa: F841 (kept alive by callbacks)
-    root.mainloop()
-
+    view = View()
+    controller = Controller(model, view)  # noqa: F841
+    
+    view.show()
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,4 @@
-"""Controller layer: wires Model and View together.
-
-Imports no Tk widgets. Reacts to key/select events from the View, mutates the
-Model and tells the View what to display. Network I/O runs in worker threads;
-results come back through a queue polled from the Tk main loop (Tk itself is
-never touched from another thread).
-"""
+"""Controller layer: wires Model and View together."""
 from __future__ import annotations
 
 import queue
@@ -16,23 +10,22 @@ from model import Feed, Model, Source
 from view import READER, SOURCES, TITLES, View
 
 SCROLL_LINES = 3
-FETCH_DEBOUNCE_MS = 200  # avoids a download per feed while holding j/k
+FETCH_DEBOUNCE_MS = 200
 POLL_MS = 100
 
 HELP = (
     "MiniRSS\n\n"
-    "j / ↓ — down (scroll in the reading area)\n"
+    "j / ↓ — down\n"
     "k / ↑ — up\n"
-    "h / ← — focus the panel on the left\n"
-    "l / → — focus the panel on the right\n"
+    "h / ← — focus left\n"
+    "l / → — focus right\n"
     "g / G — top / bottom\n"
     "a — add a feed\n"
-    "d — delete the selected feed\n"
-    "r — refresh the feed\n"
-    "o — open the article in a browser\n"
+    "d — delete feed\n"
+    "r — refresh feed\n"
+    "o — open in browser\n"
     "q — quit\n"
 )
-
 
 class Controller:
     def __init__(self, model: Model, view: View) -> None:
