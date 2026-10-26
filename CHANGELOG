@@ -1,0 +1,6 @@
+# 1.1.0
+Added internal broowser.
+
+# 1.0.0
+Moved from tkinter to PyQt6
+

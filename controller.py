@@ -23,9 +23,13 @@ HELP = (
     "a — add a feed\n"
     "d — delete feed\n"
     "r — refresh feed\n"
-    "o — open in browser\n"
+    "o — open article in browser\n"
+    "t — toggle Article / Browser tab\n"
+    "1 / 2 — jump to Article / Browser tab\n"
+    "Esc — return to Article tab\n"
     "q — quit\n"
 )
+
 
 class Controller:
     def __init__(self, model: Model, view: View) -> None:
@@ -36,7 +40,7 @@ class Controller:
         self._shown_url: Optional[str] = None  # url of the feed on screen
         self._inflight: set[str] = set()
         self._results: queue.Queue = queue.Queue()
-        self._fetch_job: Optional[str] = None
+        self._fetch_job: Optional[int] = None
 
         view.set_key_handler(self.on_key)
         view.set_select_handler(self.on_select)
@@ -48,6 +52,9 @@ class Controller:
 
     # ------------------------------------------------------------ input ---
     def on_key(self, key: str) -> bool:
+        if key == "escape":
+            self.view.exit_browser()
+            return True
         pane = self.view.focused_pane
         if key in ("j", "down"):
             self._move(+1)
@@ -62,7 +69,7 @@ class Controller:
         elif key == "G":
             self._edge(top=False)
         elif key == "a":
-            self.view.after(0, self._add_source)  # leave the key event first
+            self.view.after(0, self._add_source)
         elif key == "d":
             self._delete_source()
         elif key == "r":
@@ -149,7 +156,9 @@ class Controller:
         if idx is None or idx >= len(self.entries):
             return
         link = self.entries[idx].link
-        if link:
+        if not link:
+            return
+        if not self.view.open_in_browser(link):
             webbrowser.open(link)
 
     # ------------------------------------------------------ view updates ---
@@ -233,7 +242,7 @@ class Controller:
     def _worker(self, url: str) -> None:
         try:
             result = (url, self.model.fetch_feed(url), None)
-        except Exception as exc:  # network, parsing, anything
+        except Exception as exc:
             result = (url, None, str(exc) or exc.__class__.__name__)
         self._results.put(result)
 
