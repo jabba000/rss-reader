@@ -120,10 +120,6 @@ Bug reports and pull requests are welcome.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Check and format code style
-ruff check .
-ruff format .
-
 ```
 
 > **Important**: Keep the MVC boundary intact. The Model must not import PyQt6, the View must not import the Model, and the Controller must not import `feedparser` directly.
